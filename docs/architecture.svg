@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780" role="img" aria-labelledby="title desc">
+  <title id="title">BountyOps Architecture</title>
+  <desc id="desc">Slack Agent Builder architecture showing Slack surfaces, Bolt for JavaScript, OpenAI Agents SDK, custom tools, Devpost API, and Slack MCP Server.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f7f5; }
+      .band { fill: #4a154b; }
+      .card { fill: #ffffff; stroke: #d7d7d2; stroke-width: 2; rx: 12; }
+      .primary { fill: #1264a3; }
+      .green { fill: #007a5a; }
+      .yellow { fill: #ecb22e; }
+      .red { fill: #e01e5a; }
+      .text { fill: #1d1c1d; font-family: Arial, Helvetica, sans-serif; }
+      .muted { fill: #616061; font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 36px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .small { font-size: 18px; }
+      .tiny { font-size: 15px; }
+      .arrow { stroke: #1d1c1d; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 9 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#1d1c1d" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="780" />
+  <rect class="band" width="1400" height="116" />
+  <text class="text title" x="60" y="72" fill="#ffffff">BountyOps Slack Agent</text>
+  <text class="muted small" x="60" y="100" fill="#f2e8f3">Find urgent cash hackathons, rank what to build, and prepare submission assets before public action.</text>
+
+  <rect class="card" x="70" y="175" width="250" height="140" />
+  <circle class="primary" cx="110" cy="220" r="18" />
+  <text class="text label" x="145" y="214">Builder</text>
+  <text class="muted small" x="145" y="242">Mentions BountyOps</text>
+  <text class="muted small" x="145" y="268">inside Slack</text>
+
+  <rect class="card" x="410" y="170" width="280" height="150" />
+  <rect class="green" x="440" y="205" width="44" height="44" rx="8" />
+  <text class="text label" x="505" y="214">Slack Agent Surface</text>
+  <text class="muted small" x="505" y="242">DMs, mentions, Assistant Panel</text>
+  <text class="muted small" x="505" y="268">and App Home prompts</text>
+
+  <rect class="card" x="790" y="170" width="250" height="150" />
+  <rect class="yellow" x="820" y="205" width="44" height="44" rx="8" />
+  <text class="text label" x="885" y="214">Bolt App</text>
+  <text class="muted small" x="885" y="242">Socket Mode</text>
+  <text class="muted small" x="885" y="268">Event listeners and views</text>
+
+  <rect class="card" x="1115" y="170" width="225" height="150" />
+  <rect class="red" x="1145" y="205" width="44" height="44" rx="8" />
+  <text class="text label" x="1210" y="214">Agent Runtime</text>
+  <text class="muted small" x="1210" y="242">OpenAI Agents SDK</text>
+  <text class="muted small" x="1210" y="268">Chat Completions mode</text>
+
+  <path class="arrow" d="M 320 245 L 400 245" />
+  <path class="arrow" d="M 690 245 L 780 245" />
+  <path class="arrow" d="M 1040 245 L 1105 245" />
+
+  <rect class="card" x="170" y="455" width="300" height="160" />
+  <text class="text label" x="205" y="502">scan_cash_hackathons</text>
+  <text class="muted small" x="205" y="535">Ranks Slack, Qwen, Reddit</text>
+  <text class="muted small" x="205" y="562">Filters low-value or risky work</text>
+  <text class="muted small" x="205" y="589">Uses Devpost API plus fallback</text>
+
+  <rect class="card" x="550" y="455" width="300" height="160" />
+  <text class="text label" x="585" y="502">prepare_submission_plan</text>
+  <text class="muted small" x="585" y="535">Required assets</text>
+  <text class="muted small" x="585" y="562">2-day build plan</text>
+  <text class="muted small" x="585" y="589">Human approval blockers</text>
+
+  <rect class="card" x="930" y="455" width="300" height="160" />
+  <text class="text label" x="965" y="502">Slack MCP Server</text>
+  <text class="muted small" x="965" y="535">Workspace search and canvases</text>
+  <text class="muted small" x="965" y="562">Enabled when OAuth user token</text>
+  <text class="muted small" x="965" y="589">No public action without approval</text>
+
+  <path class="arrow" d="M 1215 320 C 1215 395 1040 405 1040 445" />
+  <path class="arrow" d="M 1210 320 C 1110 390 700 390 700 445" />
+  <path class="arrow" d="M 1205 320 C 1025 385 330 380 320 445" />
+
+  <rect class="card" x="205" y="665" width="260" height="70" />
+  <text class="text small" x="232" y="706">Devpost open online API</text>
+  <path class="arrow dashed" d="M 320 615 L 320 655" />
+
+  <rect class="card" x="565" y="665" width="260" height="70" />
+  <text class="text small" x="594" y="706">Docs and Devpost draft</text>
+  <path class="arrow dashed" d="M 700 615 L 700 655" />
+
+  <rect class="card" x="945" y="665" width="260" height="70" />
+  <text class="text small" x="982" y="706">Slack messages/canvases</text>
+  <path class="arrow dashed" d="M 1080 615 L 1080 655" />
+
+  <text class="muted tiny" x="60" y="752">Guardrail: BountyOps prepares local work but does not submit, post, push public repos, sign wallet messages, pay, trade, or change accounts without explicit human approval.</text>
+</svg>
