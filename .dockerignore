@@ -1,0 +1,10 @@
+.git
+.slack
+.env
+.env.*
+!.env.sample
+bountyops-product-demo
+data
+logs
+node_modules
+npm-debug.log*

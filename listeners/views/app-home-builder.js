@@ -20,8 +20,8 @@ export function buildAppHomeView(installUrl = null, isConnected = false) {
         type: 'mrkdwn',
         text:
           'I scan cash-backed hackathons and bounties, rank near-deadline work, ' +
-          'and prepare submission assets before any public action.\n\n' +
-          'Ask me to *scan urgent cash hackathons*, *draft a submission plan*, or *list blockers*.',
+          'and use DataHub context to investigate data quality risks before any write action.\n\n' +
+          'Ask me to *scan urgent cash hackathons*, *review DataHub assets*, or *draft a remediation plan*.',
       },
     },
     {

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="780" viewBox="0 0 1400 780" role="img" aria-labelledby="title desc">
+  <title id="title">BountyOps DataOps Autopilot Architecture</title>
+  <desc id="desc">Slack agent architecture using the DataHub MCP Server for read-only metadata context and an approval-gated remediation plan.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f7f8fa; }
+      .header { fill: #182230; }
+      .card { fill: #ffffff; stroke: #cbd3dd; stroke-width: 2; }
+      .accent { fill: #5c3fbf; }
+      .data { fill: #147d64; }
+      .review { fill: #d98916; }
+      .text { fill: #182230; font-family: Arial, Helvetica, sans-serif; }
+      .muted { fill: #586474; font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 36px; font-weight: 700; }
+      .label { font-size: 23px; font-weight: 700; }
+      .small { font-size: 18px; }
+      .tiny { font-size: 15px; }
+      .arrow { stroke: #344153; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .future { stroke-dasharray: 9 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#344153" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="780" />
+  <rect class="header" width="1400" height="116" />
+  <text class="title" x="60" y="70" fill="#ffffff">BountyOps DataOps Autopilot</text>
+  <text class="small" x="60" y="99" fill="#dce3eb">DataHub context in Slack, with deterministic assessment and human approval before writes.</text>
+
+  <rect class="card" x="55" y="180" width="245" height="135" rx="8" />
+  <circle class="accent" cx="95" cy="220" r="18" />
+  <text class="text label" x="128" y="218">Data engineer</text>
+  <text class="muted small" x="90" y="260">Requests an investigation</text>
+  <text class="muted small" x="90" y="286">inside Slack</text>
+
+  <rect class="card" x="385" y="180" width="245" height="135" rx="8" />
+  <text class="text label" x="425" y="218">Slack + Bolt</text>
+  <text class="muted small" x="425" y="260">DMs, mentions, app home</text>
+  <text class="muted small" x="425" y="286">and streamed responses</text>
+
+  <rect class="card" x="715" y="180" width="245" height="135" rx="8" />
+  <text class="text label" x="752" y="218">Agent runtime</text>
+  <text class="muted small" x="752" y="260">OpenAI Agents SDK</text>
+  <text class="muted small" x="752" y="286">Tool orchestration</text>
+
+  <rect class="card" x="1045" y="180" width="300" height="135" rx="8" />
+  <rect class="data" x="1080" y="202" width="42" height="42" rx="7" />
+  <text class="text label" x="1140" y="218">DataHub MCP</text>
+  <text class="muted small" x="1080" y="260">Read-only tool allowlist</text>
+  <text class="muted small" x="1080" y="286">Official server via uvx</text>
+
+  <path class="arrow" d="M 300 247 L 375 247" />
+  <path class="arrow" d="M 630 247 L 705 247" />
+  <path class="arrow" d="M 960 247 L 1035 247" />
+
+  <rect class="card" x="95" y="430" width="300" height="170" rx="8" />
+  <text class="text label" x="130" y="474">Evidence collection</text>
+  <text class="muted small" x="130" y="512">Search assets and schemas</text>
+  <text class="muted small" x="130" y="542">Trace lineage and impact</text>
+  <text class="muted small" x="130" y="572">Review common queries</text>
+
+  <rect class="card" x="550" y="430" width="300" height="170" rx="8" />
+  <text class="text label" x="585" y="474">Metadata assessment</text>
+  <text class="muted small" x="585" y="512">Ownership and description</text>
+  <text class="muted small" x="585" y="542">Freshness and downstream risk</text>
+  <text class="muted small" x="585" y="572">Deterministic severity ranking</text>
+
+  <rect class="card" x="1005" y="430" width="300" height="170" rx="8" />
+  <rect class="review" x="1040" y="452" width="42" height="42" rx="7" />
+  <text class="text label" x="1100" y="474">Human review</text>
+  <text class="muted small" x="1040" y="512">Approve concrete values</text>
+  <text class="muted small" x="1040" y="542">Current build performs no writes</text>
+  <text class="muted small" x="1040" y="572">mutationExecuted: false</text>
+
+  <path class="arrow" d="M 1145 315 C 1145 370 245 365 245 420" />
+  <path class="arrow" d="M 395 515 L 540 515" />
+  <path class="arrow" d="M 850 515 L 995 515" />
+  <path class="arrow future" d="M 1155 600 C 1155 690 1195 695 1195 330" />
+
+  <rect class="card" x="480" y="665" width="440" height="70" rx="8" />
+  <text class="text small" x="520" y="697">Slack findings + proposed metadata operations</text>
+  <text class="muted tiny" x="520" y="721">add_owners, update_description, add_tags remain proposals</text>
+  <path class="arrow" d="M 1150 600 C 1100 660 930 690 930 690" />
+
+  <text class="muted tiny" x="55" y="758">Defense in depth: mutation tools are disabled in the MCP environment and excluded by the SDK tool allowlist.</text>
+</svg>

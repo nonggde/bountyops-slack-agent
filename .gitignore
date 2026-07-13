@@ -15,5 +15,8 @@ logs/
 # Node.js
 node_modules/
 
+# Local HyperFrames render workspace and generated video frames
+bountyops-product-demo/
+
 # OAuth
 data/

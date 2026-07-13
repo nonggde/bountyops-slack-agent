@@ -15,8 +15,8 @@
           "message": "Rank the top urgent cash opportunities and tell me what to build first."
         },
         {
-          "title": "Prepare Slack submission",
-          "message": "Create a submission checklist for the Slack Agent Builder Challenge."
+          "title": "Review DataHub assets",
+          "message": "Find high-impact datasets with missing ownership, weak documentation, or stale freshness and prepare a remediation plan."
         }
       ]
     },

@@ -1,0 +1,38 @@
+{
+  "assetsReviewed": 2,
+  "summary": {
+    "high": 2,
+    "medium": 1,
+    "low": 1
+  },
+  "findings": [
+    {
+      "asset": "analytics.orders",
+      "severity": "high",
+      "issue": "No owner is assigned."
+    },
+    {
+      "asset": "analytics.orders",
+      "severity": "high",
+      "issue": "Freshness is 36 hours, above the 24-hour review threshold."
+    }
+  ],
+  "proposedChanges": [
+    {
+      "operation": "add_owners",
+      "valueNeeded": "Select a technical or data owner."
+    },
+    {
+      "operation": "update_description",
+      "valueNeeded": "Review and approve a business-facing description."
+    },
+    {
+      "operation": "add_tags",
+      "valueNeeded": "Confirm the appropriate criticality tier."
+    }
+  ],
+  "approvalGate": {
+    "required": true,
+    "mutationExecuted": false
+  }
+}

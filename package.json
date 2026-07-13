@@ -2,9 +2,10 @@
   "name": "slack-bountyops-agent",
   "version": "0.1.0",
   "type": "module",
-  "license": "MIT",
+  "license": "Apache-2.0",
   "scripts": {
     "check": "npx tsc --checkJs --noEmit --skipLibCheck --esModuleInterop --target esnext --module nodenext --moduleResolution nodenext app.js",
+    "demo:datahub": "node scripts/run-datahub-assessment.mjs",
     "start": "node app.js",
     "lint": "npx @biomejs/biome check .",
     "lint:fix": "npx @biomejs/biome check --write .",

@@ -6,8 +6,11 @@ const root = process.cwd();
 const requiredFiles = [
   'README.md',
   'LICENSE',
+  'NOTICE',
   'manifest.json',
   'agent/agent.js',
+  'agent/datahub.js',
+  'agent/tools/datahub-quality.js',
   'agent/tools/opportunity-scout.js',
   'agent/tools/submission-plan.js',
   'docs/hackathon-shortlist-2026-07-09.md',
@@ -16,6 +19,11 @@ const requiredFiles = [
   'docs/demo-script.md',
   'docs/architecture.md',
   'docs/architecture.svg',
+  'docs/datahub-architecture.md',
+  'docs/datahub-architecture.svg',
+  'docs/datahub-submission.md',
+  'docs/datahub-demo-script.md',
+  'examples/datahub-remediation-plan.json',
 ];
 
 const publicScanFiles = [
@@ -25,12 +33,19 @@ const publicScanFiles = [
   'agent/agent.js',
   'agent/tools/opportunity-scout.js',
   'agent/tools/submission-plan.js',
+  'agent/datahub.js',
+  'agent/tools/datahub-quality.js',
   'docs/hackathon-shortlist-2026-07-09.md',
   'docs/submission-checklist.md',
   'docs/devpost-submission-draft.md',
   'docs/demo-script.md',
   'docs/architecture.md',
   'docs/architecture.svg',
+  'docs/datahub-architecture.md',
+  'docs/datahub-architecture.svg',
+  'docs/datahub-submission.md',
+  'docs/datahub-demo-script.md',
+  'examples/datahub-remediation-plan.json',
 ];
 
 const requiredReadmeLinks = [
@@ -38,6 +53,10 @@ const requiredReadmeLinks = [
   'docs/submission-checklist.md',
   'docs/devpost-submission-draft.md',
   'docs/demo-script.md',
+  'docs/datahub-architecture.svg',
+  'docs/datahub-submission.md',
+  'docs/datahub-demo-script.md',
+  'examples/datahub-remediation-plan.json',
 ];
 
 const forbiddenPatterns = [
@@ -45,6 +64,7 @@ const forbiddenPatterns = [
   { name: 'Slack token', pattern: /xox[baprs]-[A-Za-z0-9-]+/ },
   { name: 'User gateway URL', pattern: /z30\.top/i },
   { name: 'Filled Slack client secret', pattern: /SLACK_CLIENT_SECRET=(?!YOUR_)[A-Za-z0-9_-]{20,}/ },
+  { name: 'Filled DataHub token', pattern: /DATAHUB_GMS_TOKEN=(?!YOUR_)[A-Za-z0-9_.-]{12,}/ },
 ];
 
 function fail(message) {
@@ -89,6 +109,14 @@ for (const link of requiredReadmeLinks) {
   if (!readme.includes(link)) fail(`README is missing link to ${link}`);
 }
 if (process.exitCode !== 1) pass('README links the submission artifacts');
+
+const packageJson = JSON.parse(readFileSync(join(root, 'package.json'), 'utf8'));
+const license = readFileSync(join(root, 'LICENSE'), 'utf8');
+if (packageJson.license !== 'Apache-2.0' || !license.includes('Apache License')) {
+  fail('Apache 2.0 license is not configured');
+} else {
+  pass('Apache 2.0 license is configured');
+}
 
 for (const file of publicScanFiles) {
   const text = readFileSync(join(root, file), 'utf8');
