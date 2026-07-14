@@ -1,0 +1,508 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>BountyOps DataOps Autopilot</title>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.14.2/dist/gsap.min.js"></script>
+    <style>
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: #F7F6F3;
+        color: #1D1C1D;
+        font-family: Inter, sans-serif;
+      }
+      #datahub-demo { position: relative; overflow: hidden; background: #F7F6F3; }
+      .scene {
+        position: absolute;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background-color: #F7F6F3;
+      }
+      .s2, .s3, .s4, .s5, .s6 { opacity: 0; visibility: hidden; }
+      .scene-content {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        height: 100%;
+        padding: 84px 112px;
+        gap: 28px;
+      }
+      .topline {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 40px;
+        font: 700 20px "JetBrains Mono", monospace;
+        color: #4A154B;
+      }
+      .live-label { display: flex; align-items: center; gap: 12px; }
+      .live-dot { width: 14px; height: 14px; background: #007A5A; }
+      .step { color: #625D62; font-variant-numeric: tabular-nums; }
+      .ghost {
+        position: absolute;
+        right: -12px;
+        bottom: -110px;
+        font: 900 330px/1 Inter, sans-serif;
+        color: #4A154B;
+        opacity: 0.035;
+      }
+      .corner-rule {
+        position: absolute;
+        right: 112px;
+        top: 118px;
+        width: 190px;
+        height: 190px;
+        border-top: 3px solid #ECB22E;
+        border-right: 3px solid #ECB22E;
+        opacity: 0.8;
+      }
+      h1, h2, h3, p { margin: 0; letter-spacing: 0; }
+      h1 { font-size: 116px; line-height: 0.98; font-weight: 900; max-width: 1280px; }
+      h2 { font-size: 72px; line-height: 1.03; font-weight: 900; }
+      .lede { font-size: 34px; line-height: 1.35; max-width: 1080px; color: #4D494D; }
+      .mono { font-family: "JetBrains Mono", monospace; font-variant-ligatures: none; }
+      .accent { color: #007A5A; }
+      .aubergine { color: #4A154B; }
+
+      .s1 .scene-content { justify-content: center; padding-right: 520px; }
+      .s1 .topline { position: absolute; top: 84px; left: 112px; right: 112px; }
+      .s1 .lede { margin-top: 14px; }
+      .signal-stack {
+        position: absolute;
+        right: 112px;
+        bottom: 98px;
+        width: 420px;
+        border-top: 4px solid #4A154B;
+      }
+      .signal-row {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        align-items: baseline;
+        padding: 22px 0;
+        border-bottom: 2px solid #D9D5D9;
+        font-size: 23px;
+      }
+      .signal-row strong { font: 900 38px Inter, sans-serif; font-variant-numeric: tabular-nums; }
+      .signal-row small { color: #625D62; font-size: 18px; }
+
+      .workspace {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 290px 1fr;
+        border: 2px solid #D9D5D9;
+        background: #FCFBF9;
+        box-shadow: 0 24px 60px rgba(29, 28, 29, 0.12);
+      }
+      .sidebar {
+        display: flex;
+        flex-direction: column;
+        padding: 34px 28px;
+        gap: 26px;
+        color: #F7F6F3;
+        background: #4A154B;
+      }
+      .sidebar-brand { font-size: 34px; font-weight: 900; }
+      .sidebar-section { font: 700 17px "JetBrains Mono", monospace; color: #D8BFD8; }
+      .sidebar-item { padding: 12px 14px; font-size: 23px; }
+      .sidebar-item.active { background: #007A5A; color: #F7F6F3; font-weight: 700; }
+      .thread { display: flex; flex-direction: column; min-width: 0; }
+      .thread-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 86px;
+        padding: 0 38px;
+        border-bottom: 2px solid #E7E3E7;
+      }
+      .thread-head strong { font-size: 30px; }
+      .thread-head span { font: 700 16px "JetBrains Mono", monospace; color: #007A5A; }
+      .messages { display: flex; flex-direction: column; padding: 30px 40px; gap: 24px; }
+      .message { display: grid; grid-template-columns: 54px 1fr; gap: 18px; }
+      .avatar {
+        width: 54px;
+        height: 54px;
+        display: grid;
+        place-items: center;
+        font-size: 22px;
+        font-weight: 900;
+        color: #1D1C1D;
+        background: #ECB22E;
+      }
+      .message.bot .avatar { color: #F7F6F3; background: #4A154B; }
+      .message-copy { min-width: 0; }
+      .message-copy b { font-size: 22px; }
+      .message-copy p { margin-top: 8px; font-size: 24px; line-height: 1.42; }
+      .tool-run {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+      .tool-chip {
+        border: 2px solid #007A5A;
+        padding: 9px 13px;
+        font: 700 16px "JetBrains Mono", monospace;
+        color: #007A5A;
+        background: #F7F6F3;
+      }
+      .reply-summary {
+        margin-top: 16px;
+        padding: 18px 20px;
+        border-top: 2px solid #D9D5D9;
+        border-bottom: 2px solid #D9D5D9;
+        font-size: 22px;
+        line-height: 1.45;
+      }
+      .reply-summary > span { display: block; }
+
+      .catalog {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 0.82fr 1.18fr;
+        border: 2px solid #D9D5D9;
+        background: #FCFBF9;
+        box-shadow: 0 24px 60px rgba(29, 28, 29, 0.12);
+      }
+      .catalog-left { padding: 38px; border-right: 2px solid #D9D5D9; }
+      .search-input {
+        display: flex;
+        align-items: center;
+        min-height: 58px;
+        padding: 0 18px;
+        border: 2px solid #4A154B;
+        font: 700 22px "JetBrains Mono", monospace;
+      }
+      .result-label { margin-top: 30px; font: 700 17px "JetBrains Mono", monospace; color: #625D62; }
+      .dataset-title { margin-top: 12px; font-size: 38px; font-weight: 900; }
+      .dataset-urn { margin-top: 12px; font-size: 17px; line-height: 1.45; overflow-wrap: anywhere; color: #625D62; }
+      .tags { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px; }
+      .tag { padding: 8px 12px; border: 2px solid #ECB22E; font: 700 16px "JetBrains Mono", monospace; }
+      .catalog-left p { margin-top: 22px; font-size: 22px; line-height: 1.42; }
+      .schema { padding: 32px 38px; min-width: 0; }
+      .schema-head { display: flex; justify-content: space-between; align-items: end; margin-bottom: 18px; }
+      .schema-head h3 { font-size: 34px; }
+      .schema-head span { font: 700 18px "JetBrains Mono", monospace; color: #007A5A; }
+      .schema-row {
+        display: grid;
+        grid-template-columns: 1.25fr 0.6fr 0.6fr;
+        gap: 18px;
+        align-items: center;
+        min-height: 58px;
+        border-top: 2px solid #E7E3E7;
+        font-size: 20px;
+      }
+      .schema-row code { font: 700 18px "JetBrains Mono", monospace; }
+      .field-flag { justify-self: start; padding: 5px 8px; font: 700 16px "JetBrains Mono", monospace; color: #4A154B; border: 1px solid #4A154B; }
+      .field-ok { color: #625D62; }
+
+      .lineage-stage {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 44px;
+      }
+      .lineage-stats { display: flex; align-items: baseline; gap: 44px; }
+      .big-stat { font: 900 118px Inter, sans-serif; color: #007A5A; font-variant-numeric: tabular-nums; }
+      .stat-copy { max-width: 520px; font-size: 30px; line-height: 1.25; }
+      .lineage-map { display: grid; grid-template-columns: 290px 1fr 520px; align-items: center; gap: 0; }
+      .node {
+        position: relative;
+        z-index: 2;
+        padding: 26px 28px;
+        border: 3px solid #4A154B;
+        background: #FCFBF9;
+      }
+      .node strong { display: block; font-size: 27px; }
+      .node small { display: block; margin-top: 8px; font: 700 16px "JetBrains Mono", monospace; color: #625D62; }
+      .node.primary { background: #4A154B; color: #F7F6F3; }
+      .node.primary small { color: #D8BFD8; }
+      .line-rail { height: 5px; background: #ECB22E; transform-origin: left center; }
+      .fanout { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+      .fanout .node { padding: 18px 20px; border-width: 2px; }
+      .fanout .node strong { font-size: 21px; }
+      .lineage-note { font-size: 25px; color: #4D494D; }
+
+      .plan {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1.4fr 0.6fr;
+        gap: 34px;
+      }
+      .findings { border-top: 4px solid #4A154B; }
+      .finding {
+        display: grid;
+        grid-template-columns: 130px 1fr 240px;
+        align-items: center;
+        gap: 22px;
+        min-height: 112px;
+        border-bottom: 2px solid #D9D5D9;
+      }
+      .severity { font: 700 18px "JetBrains Mono", monospace; }
+      .severity.high { color: #9F241F; }
+      .severity.medium { color: #7A4C00; }
+      .finding strong { font-size: 26px; }
+      .finding span:last-child { font-size: 19px; color: #625D62; }
+      .approval {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        padding: 34px;
+        color: #F7F6F3;
+        background: #4A154B;
+      }
+      .approval-label { font: 700 18px "JetBrains Mono", monospace; color: #ECB22E; }
+      .approval h3 { margin-top: 18px; font-size: 48px; line-height: 1.05; }
+      .approval p { font-size: 22px; line-height: 1.42; color: #E8DCE8; }
+      .approval-state { padding-top: 24px; border-top: 2px solid #8A5B8A; font: 700 20px "JetBrains Mono", monospace; }
+
+      .s6 .scene-content { justify-content: center; align-items: flex-start; padding-right: 520px; }
+      .s6 .topline { position: absolute; top: 84px; left: 112px; right: 112px; }
+      .closing-flow { display: flex; align-items: stretch; gap: 18px; margin-top: 30px; }
+      .closing-step {
+        width: 270px;
+        padding: 24px;
+        border-top: 4px solid #4A154B;
+        border-bottom: 2px solid #D9D5D9;
+        font-size: 23px;
+        line-height: 1.3;
+      }
+      .closing-step strong { display: block; margin-bottom: 10px; font: 700 17px "JetBrains Mono", monospace; color: #007A5A; }
+      .end-mark {
+        position: absolute;
+        right: 112px;
+        bottom: 92px;
+        width: 360px;
+        padding: 28px 0;
+        border-top: 4px solid #ECB22E;
+        font-size: 30px;
+        font-weight: 900;
+      }
+      .end-mark span { display: block; margin-top: 10px; font: 400 18px "JetBrains Mono", monospace; color: #625D62; }
+    </style>
+  </head>
+  <body>
+    <div id="datahub-demo" class="clip" data-composition-id="datahub-demo" data-width="1920" data-height="1080" data-start="0" data-duration="56" data-track-index="0">
+      <section id="scene1" class="scene s1">
+        <div class="corner-rule" data-layout-ignore></div>
+        <div class="ghost" data-layout-ignore>OPS</div>
+        <div class="scene-content">
+          <div class="topline"><span>BOUNTYOPS / DATAOPS AUTOPILOT</span><span class="step">01 / 06</span></div>
+          <h1>Turn metadata debt into an approved plan.</h1>
+          <p class="lede">A Slack-native agent investigates real DataHub context, ranks risk, and keeps every write behind a human gate.</p>
+          <div class="signal-stack">
+            <div class="signal-row"><span>DataHub Quickstart</span><strong class="accent">LIVE</strong></div>
+            <div class="signal-row"><span>Read-only MCP tools</span><strong>8</strong></div>
+            <div class="signal-row"><span>Mutation tools exposed</span><strong>0</strong></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene2" class="scene s2">
+        <div class="ghost" data-layout-ignore>ASK</div>
+        <div class="scene-content">
+          <div class="topline"><span class="live-label"><i class="live-dot"></i> LIVE SLACK WORKFLOW</span><span class="step">02 / 06</span></div>
+          <div class="workspace">
+            <aside class="sidebar">
+              <div class="sidebar-brand">BountyOps</div>
+              <div class="sidebar-section">AGENTS &amp; APPS</div>
+              <div class="sidebar-item active">BountyOps (local)</div>
+              <div class="sidebar-section">DATAOPS MODE</div>
+              <div class="sidebar-item">Catalog search</div>
+              <div class="sidebar-item">Impact analysis</div>
+              <div class="sidebar-item">Remediation plan</div>
+            </aside>
+            <main class="thread">
+              <header class="thread-head"><strong>BountyOps (local)</strong><span>CONNECTED TO DATAHUB</span></header>
+              <div class="messages">
+                <div class="message user">
+                  <div class="avatar">U</div>
+                  <div class="message-copy"><b>Data platform lead</b><p>Find the orders dataset, inspect its schema, and summarize downstream lineage. Do not change metadata.</p></div>
+                </div>
+                <div class="message bot">
+                  <div class="avatar">B</div>
+                  <div class="message-copy">
+                    <b>BountyOps <span class="mono accent">AGENT</span></b>
+                    <div class="tool-run"><span class="tool-chip">search</span><span class="tool-chip">get_entities</span><span class="tool-chip">list_schema_fields</span><span class="tool-chip">get_lineage</span></div>
+                    <div class="reply-summary"><span><strong>Found:</strong> <span class="mono">order_entry.orders</span></span><span><strong>Evidence:</strong> 15 fields, PII markers, 20 downstream entities.</span><span><strong>Action:</strong> no metadata changed.</span></div>
+                  </div>
+                </div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene3" class="scene s3" data-layout-allow-overflow>
+        <div class="ghost" data-layout-ignore>15</div>
+        <div class="scene-content">
+          <div class="topline"><span>REAL DATAHUB CONTEXT</span><span class="step">03 / 06</span></div>
+          <div class="catalog">
+            <div class="catalog-left">
+              <div class="search-input">orders</div>
+              <div class="result-label">BEST MATCH / DATASET</div>
+              <div class="dataset-title">order_entry.orders</div>
+              <div class="dataset-urn mono">urn:li:dataset:(urn:li:dataPlatform:dbt,b2fd91.order_entry_db.order_entry.orders,PROD)</div>
+              <div class="tags"><span class="tag">PII</span><span class="tag">PII_Data</span><span class="tag">Authoritative Source</span></div>
+              <p>Contains header information for customer orders.</p>
+            </div>
+            <div class="schema">
+              <div class="schema-head"><h3>Schema fields</h3><span>15 TOTAL</span></div>
+              <div class="schema-row"><code>order_id</code><span>NUMBER</span><span class="field-ok">primary key</span></div>
+              <div class="schema-row"><code>customer_id</code><span>NUMBER</span><span class="field-flag">PII</span></div>
+              <div class="schema-row"><code>billing_address_id</code><span>NUMBER</span><span class="field-flag">PII</span></div>
+              <div class="schema-row"><code>delivery_address_id</code><span>NUMBER</span><span class="field-flag">PII</span></div>
+              <div class="schema-row"><code>order_total</code><span>DECIMAL</span><span class="field-ok">currency</span></div>
+              <div class="schema-row"><code>order_status</code><span>STRING</span><span class="field-ok">operational</span></div>
+              <div class="schema-row"><code>payment_method_code</code><span>STRING</span><span class="field-ok">classified</span></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene4" class="scene s4" data-layout-allow-overflow>
+        <div class="ghost" data-layout-ignore>20</div>
+        <div class="scene-content">
+          <div class="topline"><span>DOWNSTREAM IMPACT</span><span class="step">04 / 06</span></div>
+          <div class="lineage-stage">
+            <div class="lineage-stats"><div class="big-stat">20</div><div class="stat-copy">downstream entities returned by DataHub MCP, including column-level lineage.</div></div>
+            <div class="lineage-map">
+              <div class="node primary"><strong>orders</strong><small>DBT DATASET</small></div>
+              <div class="line-rail"></div>
+              <div class="fanout">
+                <div class="node"><strong>order_details</strong><small>DBT MODEL</small></div>
+                <div class="node"><strong>ORDER_DETAILS</strong><small>SNOWFLAKE</small></div>
+                <div class="node"><strong>Order Details</strong><small>TABLEAU</small></div>
+                <div class="node"><strong>ORDER_DETAILS</strong><small>POWER BI</small></div>
+                <div class="node"><strong>order_details</strong><small>LOOKER</small></div>
+                <div class="node"><strong>Dashboards</strong><small>BI SURFACES</small></div>
+              </div>
+            </div>
+            <p class="lineage-note">The agent converts a raw graph into a concise blast-radius summary before anyone approves a change.</p>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene5" class="scene s5">
+        <div class="ghost" data-layout-ignore>PLAN</div>
+        <div class="scene-content">
+          <div class="topline"><span>PRIORITIZED REMEDIATION</span><span class="step">05 / 06</span></div>
+          <div class="plan">
+            <div class="findings">
+              <div class="finding"><span class="severity high">HIGH</span><strong>Missing technical owner</strong><span>Propose owner candidates</span></div>
+              <div class="finding"><span class="severity high">HIGH</span><strong>PII fields affect downstream BI</strong><span>Review access and documentation</span></div>
+              <div class="finding"><span class="severity medium">MEDIUM</span><strong>Criticality tier not confirmed</strong><span>Propose Tier 1 classification</span></div>
+              <div class="finding"><span class="severity medium">MEDIUM</span><strong>Description needs business context</strong><span>Draft an improved description</span></div>
+            </div>
+            <aside class="approval">
+              <div><div class="approval-label">HUMAN APPROVAL GATE</div><h3>Plan first. Write later.</h3></div>
+              <p>BountyOps returns evidence and concrete proposed values. Mutation tools remain disabled until a human explicitly approves.</p>
+              <div class="approval-state">MUTATION EXECUTED: FALSE</div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="scene6" class="scene s6">
+        <div class="corner-rule" data-layout-ignore></div>
+        <div class="ghost" data-layout-ignore>GO</div>
+        <div class="scene-content">
+          <div class="topline"><span>BOUNTYOPS / DATAOPS AUTOPILOT</span><span class="step">06 / 06</span></div>
+          <h2>Data context becomes safe, reviewable work.</h2>
+          <p class="lede">Real catalog evidence in Slack. Deterministic risk checks. Human-approved remediation.</p>
+          <div class="closing-flow">
+            <div class="closing-step"><strong>01 / INVESTIGATE</strong>Search, schema, queries, lineage</div>
+            <div class="closing-step"><strong>02 / PRIORITIZE</strong>Ownership, freshness, impact</div>
+            <div class="closing-step"><strong>03 / APPROVE</strong>Concrete values before writes</div>
+          </div>
+          <div class="end-mark">BountyOps<span>Built with DataHub MCP + Slack</span></div>
+        </div>
+      </section>
+    </div>
+    <script>
+      window.__timelines = window.__timelines || {};
+      const tl = gsap.timeline({ paused: true });
+
+      tl.from("#scene1 .topline", { y: -28, opacity: 0, duration: 0.45, ease: "expo.out" }, 0.2)
+        .from("#scene1 h1", { y: 72, opacity: 0, duration: 0.75, ease: "power4.out" }, 0.45)
+        .from("#scene1 .lede", { x: -32, opacity: 0, duration: 0.55, ease: "sine.out" }, 0.9)
+        .from("#scene1 .signal-row", { y: 28, opacity: 0, duration: 0.42, stagger: 0.16, ease: "back.out(1.2)" }, 1.15)
+        .from("#scene1 .corner-rule", { scale: 0.75, opacity: 0, duration: 0.6, ease: "circ.out" }, 0.7);
+
+      tl.set("#scene2", { visibility: "visible" }, 7.3)
+        .to("#scene1", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 7.3)
+        .fromTo("#scene2", { x: 1920, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 7.3)
+        .set("#scene1", { visibility: "hidden" }, 7.8)
+        .from("#scene2 .topline", { y: -24, opacity: 0, duration: 0.4, ease: "expo.out" }, 7.9)
+        .from("#scene2 .workspace", { y: 42, scale: 0.98, opacity: 0, duration: 0.58, ease: "back.out(1.12)" }, 8.05)
+        .from("#scene2 .sidebar-item", { x: -24, opacity: 0, duration: 0.32, stagger: 0.08, ease: "power2.out" }, 8.5)
+        .from("#scene2 .message.user", { y: 30, opacity: 0, duration: 0.45, ease: "circ.out" }, 8.8)
+        .from("#scene2 .message.bot", { y: 36, opacity: 0, duration: 0.48, ease: "power3.out" }, 9.45)
+        .from("#scene2 .tool-chip", { scale: 0.82, opacity: 0, duration: 0.28, stagger: 0.15, ease: "back.out(1.5)" }, 10.05)
+        .from("#scene2 .reply-summary", { y: 22, opacity: 0, duration: 0.45, ease: "sine.out" }, 11.0);
+
+      tl.set("#scene3", { visibility: "visible" }, 16.8)
+        .to("#scene2", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 16.8)
+        .fromTo("#scene3", { x: 1920, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 16.8)
+        .set("#scene2", { visibility: "hidden" }, 17.3)
+        .from("#scene3 .topline", { y: -24, opacity: 0, duration: 0.42, ease: "expo.out" }, 17.4)
+        .from("#scene3 .catalog", { scale: 0.975, opacity: 0, duration: 0.55, ease: "back.out(1.1)" }, 17.55)
+        .from("#scene3 .search-input", { x: -38, opacity: 0, duration: 0.45, ease: "power4.out" }, 18.0)
+        .from("#scene3 .dataset-title", { y: 26, opacity: 0, duration: 0.4, ease: "circ.out" }, 18.3)
+        .from("#scene3 .dataset-urn", { opacity: 0, duration: 0.4, ease: "sine.out" }, 18.65)
+        .from("#scene3 .tag", { scale: 0.8, opacity: 0, duration: 0.28, stagger: 0.14, ease: "back.out(1.45)" }, 19.0)
+        .from("#scene3 .schema-row", { x: 30, opacity: 0, duration: 0.32, stagger: 0.22, ease: "power2.out" }, 18.4);
+
+      tl.set("#scene4", { visibility: "visible" }, 27.8)
+        .to("#scene3", { y: -1080, duration: 0.5, ease: "power3.inOut" }, 27.8)
+        .fromTo("#scene4", { y: 1080, opacity: 1 }, { y: 0, duration: 0.5, ease: "power3.inOut" }, 27.8)
+        .set("#scene3", { visibility: "hidden" }, 28.3)
+        .from("#scene4 .topline", { y: -24, opacity: 0, duration: 0.42, ease: "expo.out" }, 28.4)
+        .from("#scene4 .big-stat", { scale: 0.6, opacity: 0, duration: 0.55, ease: "back.out(1.3)" }, 28.55)
+        .from("#scene4 .stat-copy", { x: 42, opacity: 0, duration: 0.5, ease: "power3.out" }, 28.8)
+        .from("#scene4 .node.primary", { x: -48, opacity: 0, duration: 0.5, ease: "circ.out" }, 29.35)
+        .from("#scene4 .line-rail", { scaleX: 0, duration: 0.65, ease: "power4.out" }, 29.75)
+        .from("#scene4 .fanout .node", { x: 34, opacity: 0, duration: 0.38, stagger: 0.15, ease: "back.out(1.15)" }, 30.15)
+        .from("#scene4 .lineage-note", { y: 24, opacity: 0, duration: 0.45, ease: "sine.out" }, 31.3);
+
+      tl.set("#scene5", { visibility: "visible" }, 39.3)
+        .to("#scene4", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 39.3)
+        .fromTo("#scene5", { x: 1920, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 39.3)
+        .set("#scene4", { visibility: "hidden" }, 39.8)
+        .from("#scene5 .topline", { y: -24, opacity: 0, duration: 0.42, ease: "expo.out" }, 39.9)
+        .from("#scene5 .finding", { y: 28, opacity: 0, duration: 0.42, stagger: 0.28, ease: "power3.out" }, 40.05)
+        .from("#scene5 .approval", { x: 48, opacity: 0, duration: 0.55, ease: "back.out(1.12)" }, 40.45)
+        .from("#scene5 .approval-label", { y: -18, opacity: 0, duration: 0.35, ease: "circ.out" }, 40.85)
+        .from("#scene5 .approval h3", { y: 32, opacity: 0, duration: 0.45, ease: "power4.out" }, 41.05)
+        .from("#scene5 .approval p", { opacity: 0, duration: 0.45, ease: "sine.out" }, 41.45)
+        .from("#scene5 .approval-state", { y: 18, opacity: 0, duration: 0.4, ease: "power2.out" }, 41.8);
+
+      tl.set("#scene6", { visibility: "visible" }, 48.8)
+        .to("#scene5", { x: -1920, duration: 0.5, ease: "power3.inOut" }, 48.8)
+        .fromTo("#scene6", { x: 1920, opacity: 1 }, { x: 0, duration: 0.5, ease: "power3.inOut" }, 48.8)
+        .set("#scene5", { visibility: "hidden" }, 49.3)
+        .from("#scene6 .topline", { y: -26, opacity: 0, duration: 0.42, ease: "expo.out" }, 49.4)
+        .from("#scene6 h2", { y: 62, opacity: 0, duration: 0.68, ease: "power4.out" }, 49.6)
+        .from("#scene6 .lede", { x: -36, opacity: 0, duration: 0.5, ease: "circ.out" }, 50.05)
+        .from("#scene6 .closing-step", { y: 32, opacity: 0, duration: 0.42, stagger: 0.2, ease: "back.out(1.15)" }, 50.4)
+        .from("#scene6 .end-mark", { x: 44, opacity: 0, duration: 0.48, ease: "sine.out" }, 51.15)
+        .from("#scene6 .corner-rule", { scale: 0.76, opacity: 0, duration: 0.55, ease: "power2.out" }, 49.95)
+        .to("#scene6", { opacity: 0, duration: 0.7, ease: "power2.in" }, 55.2)
+        .set("#scene6", { visibility: "hidden" }, 55.9);
+
+      tl.to(".ghost", { x: 20, duration: 4, repeat: 13, yoyo: true, ease: "sine.inOut" }, 0.2);
+      window.__timelines["datahub-demo"] = tl;
+    </script>
+  </body>
+</html>

@@ -22,13 +22,20 @@ BountyOps DataOps Autopilot gives data teams a Slack-native way to investigate h
 - Working app or clear local setup path
 - DataHub-backed investigation demonstrated in Slack
 - Public demo video under three minutes
+- 56-second HyperFrames demo source and final MP4 in `bountyops-datahub-demo/`
 - Architecture diagram
 - Sample remediation output in `examples/datahub-remediation-plan.json`
 
-## Remaining External Steps
+## Verified Deployment - July 14, 2026
 
-- Start a local DataHub instance or obtain a DataHub Cloud trial
-- Create a DataHub personal access token
-- Load the official showcase or bootstrap datapack
-- Record a live DataHub-backed Slack demo
-- Register for the hackathon and create the Devpost project
+- DataHub v1.6.0 Quickstart is running with MySQL, Kafka, OpenSearch, GMS, frontend, and actions healthy.
+- The official `showcase-ecommerce` datapack loaded successfully.
+- MCP verification passed for `search`, `get_entities`, `list_schema_fields`, and downstream `get_lineage`.
+- The exposed MCP tool list contained eight read-only tools and zero mutation tools.
+- A live Slack request returned the `order_entry.orders` dataset, 15 schema fields, PII context, and 20 downstream entities.
+- The Slack response explicitly confirmed that no metadata was changed.
+- Devpost project `BountyOps DataOps Autopilot` is registered and saved as a draft.
+
+## Remaining External Step
+
+- Upload `bountyops-datahub-demo/bountyops-datahub-demo-final.mp4` to a public video host and add that URL to Devpost before final submission.

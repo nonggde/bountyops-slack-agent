@@ -67,6 +67,7 @@ BountyOps can prepare work locally, but it does not submit, post, push public re
 - DataHub architecture: [`docs/datahub-architecture.md`](docs/datahub-architecture.md)
 - Uploadable DataHub diagram: [`docs/datahub-architecture.svg`](docs/datahub-architecture.svg)
 - DataHub demo script: [`docs/datahub-demo-script.md`](docs/datahub-demo-script.md)
+- DataHub HyperFrames demo source and final MP4: [`bountyops-datahub-demo/`](bountyops-datahub-demo/)
 - Sample remediation output: [`examples/datahub-remediation-plan.json`](examples/datahub-remediation-plan.json)
 
 ## Setup

@@ -1,18 +1,18 @@
 # DataHub Demo Script
 
-Target length: 90-150 seconds.
+Target length: 56 seconds.
 
 ## Scene 1: The problem
 
-Show a Slack request: "Find high-impact datasets with missing ownership or stale freshness."
+Show a Slack request: "Find the orders dataset, inspect its schema, and summarize downstream lineage. Do not change metadata."
 
 ## Scene 2: Evidence collection
 
-Show BountyOps using DataHub MCP to search assets, inspect entity metadata and fields, and trace downstream lineage. Keep the focus on the evidence returned by DataHub.
+Show BountyOps using `search`, `get_entities`, `list_schema_fields`, and `get_lineage`. Highlight the verified `order_entry.orders` result, 15 fields, PII markers, and 20 downstream entities.
 
 ## Scene 3: Prioritized review
 
-Show `assess_datahub_metadata` returning high, medium, and low findings. Highlight missing ownership, freshness above 24 hours, and downstream impact.
+Show the deterministic remediation plan ranking missing ownership, PII impact, criticality, and description quality.
 
 ## Scene 4: Human approval gate
 
