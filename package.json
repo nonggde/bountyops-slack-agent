@@ -10,7 +10,8 @@
     "lint": "npx @biomejs/biome check .",
     "lint:fix": "npx @biomejs/biome check --write .",
     "test": "node --test",
-    "verify:submission": "node scripts/verify-submission-readiness.mjs"
+    "verify:submission": "node scripts/verify-submission-readiness.mjs",
+    "verify:qwen": "node scripts/verify-qwen-cloud.mjs"
   },
   "dependencies": {
     "@openai/agents": "^0.12.0",

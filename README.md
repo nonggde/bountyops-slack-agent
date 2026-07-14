@@ -59,6 +59,10 @@ BountyOps can prepare work locally, but it does not submit, post, push public re
 - Submission checklist: [`docs/submission-checklist.md`](docs/submission-checklist.md)
 - Devpost draft: [`docs/devpost-submission-draft.md`](docs/devpost-submission-draft.md)
 - Qwen submission plan: [`docs/qwen-cloud-submission.md`](docs/qwen-cloud-submission.md)
+- Qwen architecture: [`docs/qwen-architecture.md`](docs/qwen-architecture.md)
+- Uploadable Qwen diagram: [`docs/qwen-architecture.svg`](docs/qwen-architecture.svg)
+- Qwen demo script: [`docs/qwen-demo-script.md`](docs/qwen-demo-script.md)
+- Qwen Devpost story: [`docs/qwen-devpost-story.md`](docs/qwen-devpost-story.md)
 - DataHub submission plan: [`docs/datahub-submission.md`](docs/datahub-submission.md)
 - DataHub architecture: [`docs/datahub-architecture.md`](docs/datahub-architecture.md)
 - Uploadable DataHub diagram: [`docs/datahub-architecture.svg`](docs/datahub-architecture.svg)
@@ -143,6 +147,7 @@ SLACK_REDIRECT_URI=https://YOUR_NGROK_SUBDOMAIN.ngrok-free.app/slack/oauth_redir
 npm install
 npm run check
 npm test
+npm run verify:qwen
 npm run demo:datahub
 npm start
 ```

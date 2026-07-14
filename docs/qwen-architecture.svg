@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">BountyOps Autopilot Architecture</title>
+  <desc id="desc">QwenCloud-powered Slack agent deployed on Alibaba Cloud ECS with real tools and human approval gates.</desc>
+  <defs>
+    <style>
+      .bg { fill: #f5f7fa; }
+      .header { fill: #101820; }
+      .card { fill: #ffffff; stroke: #c8d0d9; stroke-width: 2; }
+      .qwen { fill: #4f46e5; }
+      .cloud { fill: #ff6a00; }
+      .slack { fill: #147d64; }
+      .review { fill: #d79b19; }
+      .text { fill: #17202a; font-family: Arial, Helvetica, sans-serif; }
+      .muted { fill: #586474; font-family: Arial, Helvetica, sans-serif; }
+      .title { font-size: 36px; font-weight: 700; }
+      .label { font-size: 22px; font-weight: 700; }
+      .small { font-size: 17px; }
+      .tiny { font-size: 14px; }
+      .arrow { stroke: #344153; stroke-width: 3; fill: none; marker-end: url(#arrowhead); }
+      .dashed { stroke-dasharray: 9 8; }
+    </style>
+    <marker id="arrowhead" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto">
+      <path d="M 0 0 L 12 6 L 0 12 z" fill="#344153" />
+    </marker>
+  </defs>
+
+  <rect class="bg" width="1400" height="820" />
+  <rect class="header" width="1400" height="112" />
+  <text class="title" x="58" y="66" fill="#ffffff">BountyOps Autopilot</text>
+  <text class="small" x="58" y="94" fill="#d9e1e8">QwenCloud reasoning, real workflow tools, Alibaba Cloud deployment, and human approval for consequential actions.</text>
+
+  <rect class="card" x="55" y="170" width="245" height="140" rx="8" />
+  <circle class="slack" cx="94" cy="211" r="18" />
+  <text class="text label" x="126" y="216">Builder</text>
+  <text class="muted small" x="88" y="256">Gives an ambiguous goal</text>
+  <text class="muted small" x="88" y="283">inside Slack</text>
+
+  <rect class="card" x="380" y="170" width="250" height="140" rx="8" />
+  <rect class="slack" x="414" y="192" width="42" height="42" rx="7" />
+  <text class="text label" x="476" y="216">Slack + Bolt</text>
+  <text class="muted small" x="414" y="256">DMs, mentions, App Home</text>
+  <text class="muted small" x="414" y="283">and streamed responses</text>
+
+  <rect class="card" x="710" y="170" width="285" height="140" rx="8" />
+  <rect class="cloud" x="744" y="192" width="42" height="42" rx="7" />
+  <text class="text label" x="806" y="216">Alibaba Cloud ECS</text>
+  <text class="muted small" x="744" y="256">Containerized agent backend</text>
+  <text class="muted small" x="744" y="283">Restart-protected deployment</text>
+
+  <rect class="card" x="1075" y="170" width="270" height="140" rx="8" />
+  <rect class="qwen" x="1109" y="192" width="42" height="42" rx="7" />
+  <text class="text label" x="1171" y="216">QwenCloud</text>
+  <text class="muted small" x="1109" y="256">qwen3.7-plus reasoning</text>
+  <text class="muted small" x="1109" y="283">OpenAI-compatible API</text>
+
+  <path class="arrow" d="M 300 240 L 370 240" />
+  <path class="arrow" d="M 630 240 L 700 240" />
+  <path class="arrow" d="M 995 240 L 1065 240" />
+
+  <rect class="card" x="75" y="405" width="330" height="170" rx="8" />
+  <text class="text label" x="110" y="449">Opportunity discovery</text>
+  <text class="muted small" x="110" y="487">scan_cash_hackathons</text>
+  <text class="muted small" x="110" y="517">Deadline, reward, fit, and risk</text>
+  <text class="muted small" x="110" y="547">Do-now / backup / skip</text>
+
+  <rect class="card" x="535" y="405" width="330" height="170" rx="8" />
+  <text class="text label" x="570" y="449">Autopilot planning</text>
+  <text class="muted small" x="570" y="487">qualify, plan, build</text>
+  <text class="muted small" x="570" y="517">verify, and publish phases</text>
+  <text class="muted small" x="570" y="547">Completion criteria and owners</text>
+
+  <rect class="card" x="995" y="405" width="330" height="170" rx="8" />
+  <rect class="review" x="1030" y="427" width="42" height="42" rx="7" />
+  <text class="text label" x="1092" y="451">Human approval</text>
+  <text class="muted small" x="1030" y="487">No unapproved spending</text>
+  <text class="muted small" x="1030" y="517">No wallet signing or posting</text>
+  <text class="muted small" x="1030" y="547">No silent final submission</text>
+
+  <path class="arrow" d="M 1210 310 C 1210 360 240 350 240 395" />
+  <path class="arrow" d="M 405 490 L 525 490" />
+  <path class="arrow" d="M 865 490 L 985 490" />
+
+  <rect class="card" x="100" y="665" width="320" height="88" rx="8" />
+  <text class="text small" x="134" y="699">Devpost public opportunity data</text>
+  <text class="muted tiny" x="134" y="728">Structured tool input, not model memory</text>
+
+  <rect class="card" x="540" y="665" width="320" height="88" rx="8" />
+  <text class="text small" x="574" y="699">Alibaba Container Registry</text>
+  <text class="muted tiny" x="574" y="728">Versioned image pulled by ECS RunCommand</text>
+
+  <rect class="card" x="980" y="665" width="320" height="88" rx="8" />
+  <text class="text small" x="1014" y="699">Slack execution plan</text>
+  <text class="muted tiny" x="1014" y="728">Evidence, owners, blockers, and next action</text>
+
+  <path class="arrow dashed" d="M 240 575 L 240 655" />
+  <path class="arrow dashed" d="M 850 310 C 850 625 700 615 700 655" />
+  <path class="arrow" d="M 1160 575 L 1160 655" />
+
+  <text class="muted tiny" x="58" y="792">Verification: npm run verify:qwen proves live inference; tests and secret scanning run before deployment or public submission.</text>
+</svg>
