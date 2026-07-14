@@ -51,7 +51,8 @@ BountyOps can prepare work locally, but it does not submit, post, push public re
 
 ## Submission Materials
 
-- Live Slack demo: [YouTube](https://youtu.be/8jPSfNMiX8c)
+- DataHub agent demo: [YouTube](https://youtu.be/rhs2dxkMYcY)
+- Slack Agent Builder demo: [YouTube](https://youtu.be/8jPSfNMiX8c)
 - Shortlist: [`docs/hackathon-shortlist-2026-07-09.md`](docs/hackathon-shortlist-2026-07-09.md)
 - Architecture: [`docs/architecture.md`](docs/architecture.md)
 - Uploadable architecture diagram: [`docs/architecture.svg`](docs/architecture.svg)

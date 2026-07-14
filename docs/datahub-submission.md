@@ -35,7 +35,9 @@ BountyOps DataOps Autopilot gives data teams a Slack-native way to investigate h
 - A live Slack request returned the `order_entry.orders` dataset, 15 schema fields, PII context, and 20 downstream entities.
 - The Slack response explicitly confirmed that no metadata was changed.
 - Devpost project `BountyOps DataOps Autopilot` is registered and saved as a draft.
+- The 56-second DataHub demo is publicly available at https://youtu.be/rhs2dxkMYcY.
 
-## Remaining External Step
+## Submission Status
 
-- Upload `bountyops-datahub-demo/bountyops-datahub-demo-final.mp4` to a public video host and add that URL to Devpost before final submission.
+- Public repository, Apache 2.0 license, project story, DataHub usage details, feedback survey, and public video are complete in the Devpost draft.
+- Final submission remains pending until the final review and terms acknowledgement are complete.
